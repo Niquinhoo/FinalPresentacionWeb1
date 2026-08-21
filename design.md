@@ -1,98 +1,79 @@
-# Pediloo presentation design system
+# Sistema visual de la presentación Pediloo
 
-## Design read
+## Trabajo de comunicación
 
-Reading this as: technical defense presentation for students and evaluators, with a product-education language, leaning toward a dark editorial systems board instead of a marketing landing page.
+Al terminar la defensa, los profesores deben poder reconstruir el recorrido de un dato porque cada diapositiva conecta teoría, código real y una consecuencia observable.
 
-## Intent
+## Lectura de diseño
 
-The presentation explains how Pediloo works from React to Express to SQLite. The visual system must make code, theory, evidence and caveats easy to scan while keeping the Pediloo identity visible.
+Presentación técnica para docentes, con una estética sobria, alto contraste y evidencia legible. Se preserva la marca Pediloo y se reemplaza la estructura tipo dashboard por composiciones más planas.
 
-## Dials
+## Diales
 
-- `DESIGN_VARIANCE: 6` for diagrams with a little asymmetry, but enough structure for an oral defense.
-- `MOTION_INTENSITY: 4` for slide transitions and progressive reveals that explain sequence.
-- `VISUAL_DENSITY: 7` because the deck carries source paths, code, contracts and defense notes.
+- `DESIGN_VARIANCE: 4`: estructura estable con pequeñas diferencias entre diapositivas.
+- `MOTION_INTENSITY: 3`: transición corta de opacidad y desplazamiento; sin animación decorativa.
+- `VISUAL_DENSITY: 4`: diez diapositivas para 6-8 minutos, con una sola idea principal por pantalla.
 
-## Brand source
+## Narrativa
 
-The palette is extracted from the working `reactfinal` project and its brand assets:
+1. Pediloo como proyecto integrado.
+2. Dos procesos separados por HTTP.
+3. El ciclo declarativo de React.
+4. Puente API de ida.
+5. Backend y puente de regreso.
+6. Contrato REST y validación.
+7. Carrito, stock y transacción.
+8. Problemática de infraestructura: SQLite local frente a instancias serverless.
+9. Seguridad y límites.
+10. Demostración verificable y síntesis.
 
-- `F:/Escritorio/reactfinal/public/assets/logoheader.png`
-- `F:/Escritorio/reactfinal/src/App.css`
-- `F:/Escritorio/reactfinal/src/index.css`
+## Plan de exposición
 
-The presentation copies the real wordmark to `public/brand/logoheader.png` so the deck does not redraw the logo.
+- Diapositivas 1 y 2, contexto y arquitectura: 1 minuto.
+- Diapositiva 3, modelo mental de React: 50 segundos.
+- Diapositivas 4 y 5, puente HTTP completo: 1 minuto.
+- Diapositiva 6, contrato REST: 45 segundos.
+- Diapositiva 7, regla central de compra: 1 minuto.
+- Diapositiva 8, persistencia distribuida y sincronización: 55 segundos.
+- Diapositiva 9, seguridad y límites: 45 segundos.
+- Diapositiva 10, demostración y cierre: 1 minuto y 10 segundos.
 
-## Color tokens
+Duración objetivo: entre 6 y 7 minutos. Si hay preguntas durante la defensa, la guía de estudio conserva el detalle que se retiró de las diapositivas.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--brand-forest` | `#2a6053` | primary brand, links, active navigation |
-| `--brand-deep` | `#1f483e` | pressed/hover state and dark brand contrast |
-| `--brand-mint` | `#3bb393` | primary accent and diagram flow |
-| `--brand-mint-bright` | `#48f7c6` | small highlights and focus only |
-| `--brand-soft` | `#a1d1bf` | readable accent text on dark surfaces |
-| `--brand-pale` | `#d7efe4` | pale mint emphasis |
-| `--brand-coral` | `#c75d3a` | warning, caveat and fallback states |
-| `--brand-coral-soft` | `#ffa585` | readable coral text on dark surfaces |
-| `--brand-yellow` | `#f9d276` | secondary emphasis and metrics |
-| `--surface-0` | `#121413` | page background |
-| `--surface-1` | `#1a1e1c` | cards and panels |
-| `--surface-2` | `#222a27` | code panels and selected surfaces |
-| `--ink` | `#f3f6f5` | primary text |
-| `--ink-muted` | `#a4adab` | secondary text |
-| `--line` | `rgba(240, 245, 243, 0.10)` | separators |
-| `--line-strong` | `rgba(240, 245, 243, 0.18)` | focus and structural borders |
+## Identidad visual
 
-Only the brand palette is used. There are no presentation-only blue, purple or orange tokens.
+- Logo real: `public/brand/logoheader.png`.
+- Display y cuerpo: Space Grotesk Variable.
+- Código y rutas: JetBrains Mono Variable.
+- Tema único oscuro.
+- Acento principal: verde Pediloo.
+- Amarillo: frontera o persistencia, sin competir con el acento.
+- Coral: únicamente errores, conflictos y riesgos.
+- Radio único de 12 px para superficies; botones circulares sólo por función de navegación.
 
-## Typography
+## Composición
 
-- Display and body: `Space Grotesk Variable`, already installed in the project.
-- Code, source paths and small labels: `JetBrains Mono Variable`, already installed.
-- Headlines are left-aligned, compact and sentence case.
-- Code is never smaller than `0.72rem` on desktop and scrolls horizontally on small screens.
+- Ancho máximo de contenido: 1180 px.
+- Títulos directos, de una o dos líneas.
+- Texto de apoyo limitado a una oración.
+- Diagramas planos para los dos recorridos del puente.
+- Código limitado a 4-8 líneas, siempre acompañado por archivo y líneas.
+- Tablas largas y listas exhaustivas quedan en la guía de estudio, no en la presentación.
+- La portada usa el logo real y una secuencia tipográfica. No simula una interfaz de producto.
 
-## Layout
+## Movimiento y accesibilidad
 
-- One dark theme across the full deck.
-- Max content width: `1180px`.
-- Desktop slides use a two-column or asymmetric grid when the content benefits from comparison.
-- Long theory is split into short evidence blocks. Each block states the concept, implementation and defense line.
-- Cards are used only for real units of evidence, not as decoration.
-- Radius scale: `12px` for panels, `8px` for controls, `999px` only for status markers.
-- Grid and flexbox handle layout. React only manages slide state, navigation and interactive behavior.
+- Flechas, espacio, Page Up/Down, Home y End conservan su comportamiento.
+- La transición entre diapositivas dura 220 ms y comunica cambio de estado.
+- `prefers-reduced-motion` elimina desplazamientos.
+- Todos los botones mantienen foco visible y nombres accesibles.
+- Los paneles de código permiten desplazamiento horizontal en pantallas pequeñas.
 
-## Content pattern
+## Verificación requerida
 
-Every technical slide uses this order when applicable:
-
-1. **Idea**: what the concept means.
-2. **Evidence**: exact path and line range from the guide.
-3. **Code**: the smallest relevant piece from the project.
-4. **Defense**: the sentence to use in an oral explanation.
-5. **Limit**: the honest caveat, when the guide documents one.
-
-## Motion and accessibility
-
-- Slide changes use `motion/react` with `MotionConfig`.
-- Motion supports hierarchy and sequence, never decoration without meaning.
-- `prefers-reduced-motion` disables translation and scale changes.
-- Keyboard navigation: Arrow keys, Page Up/Down, Home, End and Space.
-- Every interactive control has a visible focus ring using `--brand-mint-bright`.
-- Code blocks remain readable without syntax color because contrast is carried by text and spacing.
-
-## Image and asset rules
-
-- Use the actual Pediloo wordmark from `public/brand/logoheader.png`.
-- Do not replace the wordmark with a CSS approximation.
-- Diagrams are HTML/CSS and text because they represent architecture, not fake product screenshots.
-- No decorative image is introduced when the code path is the more useful evidence.
-
-## Verification checklist
-
-- All presentation colors resolve to the tokens above.
-- The deck builds with the existing `npm run build` script.
-- Every major guide block appears in at least one slide: architecture, boot, request flow, REST, model, ABM, auth, cart, checkout, orders, responsive behavior, functional logic, Atomic Design, T1-T7 theory, decisions, findings, defense demo and reproducible verification.
-- Source paths remain visible beside code so the deck is defensible and auditable.
+- `npm run lint`.
+- `npm run build`.
+- Revisión visual de las diez diapositivas en 1366x768 y 1920x1080.
+- Revisión móvil a 390x844.
+- Cero overflow, títulos cortados o errores de consola.
+- Contador final `10 / 10` y navegación completa por teclado.

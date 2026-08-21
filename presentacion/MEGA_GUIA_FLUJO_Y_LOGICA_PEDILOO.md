@@ -1570,11 +1570,11 @@ Los nombres listados arriba corresponden uno a uno con los `.ejs`, salvo estilos
 2. **El router React admin tampoco tiene guard.** `/admin/*` monta `AdminLayout` aunque no haya usuario o rol. Mostrar el botón sólo a admins no protege la ruta.
 3. **La subida backend documentada no existe.** `apiFetch` convierte el archivo a Data URL local; Express no usa Multer ni tiene `/api/upload`.
 4. **Checkout no persiste dirección ni notas.** Sólo envía usuario y descuento.
-5. **No hay sincronización push.** Admin/tienda ven el mismo SQLite en la siguiente petición, no en tiempo real.
+5. **No hay sincronización push.** Admin/tienda sólo convergen en la siguiente petición cuando consultan una fuente compartida; las listas se cargan al montar y no hay invalidación global después de cada mutación.
 6. **GET `/orders` y `/users` expone datos sin autorización.** Además Account descarga todas las órdenes y filtra por `userId` en el cliente.
 7. **`userId` del body puede asociar un pedido invitado a otro usuario** cuando no existe sesión; debería provenir sólo de sesión o validarse con una política explícita.
-8. **Secret de sesión hardcodeado y MemoryStore por defecto.** No es adecuado para producción/múltiples instancias.
-9. **SQLite en `/tmp` de Vercel es efímero.** Los datos pueden desaparecer entre instancias/deploys.
+8. **`cookie-session` firma pero no cifra la sesión y tiene un fallback de secreto en el código.** La cookie además tiene límite de tamaño; el secreto debe venir de variables de entorno.
+9. **SQLite en `/tmp` de Vercel es local y efímero por instancia.** Un POST puede escribir en la instancia A y el GET siguiente leer la instancia B sin el registro; los datos también pueden desaparecer entre reinicios/deploys.
 10. **Categoría por nombre no es FK.** La consistencia depende de código y comparación textual.
 11. **Baja de producto desde listado tiene fallback visual engañoso.** En error igualmente quita la fila local.
 12. **Documentos históricos están desactualizados.** Algunos describen columnas `status`, rutas legacy, 204 y upload Multer que no corresponden al código vigente.
@@ -1597,7 +1597,7 @@ Estas observaciones no invalidan la arquitectura académica. Distinguen una demo
 
 ### Respuesta corta al flujo completo
 
-“React controla el formulario y llama a `apiFetch`. El router Express elige un controller, el controller valida el límite HTTP y llama a un service. El service usa statements parametrizados sobre SQLite. En la compra, una transacción crea orden y líneas y descuenta stock con una condición atómica. Admin y tienda no se envían cambios entre sí: ambos consultan la misma API y por eso convergen en la misma fuente de verdad.”
+“React controla el formulario y llama a `apiFetch`. El router Express elige un controller, el controller valida el límite HTTP y llama a un service. El service usa statements parametrizados sobre SQLite. En la compra, una transacción crea orden y líneas y descuenta stock con una condición atómica. En local, admin y tienda convergen al consultar el mismo archivo; en serverless eso sólo es cierto después de migrar a una base compartida.”
 
 ### Preguntas frecuentes
 
@@ -1609,7 +1609,7 @@ Estas observaciones no invalidan la arquitectura académica. Distinguen una demo
 - **¿Cómo es responsive?** CSS media queries y grids/flex; React sólo maneja apertura de drawers.
 - **¿Cómo se sincroniza?** Por fuente de verdad compartida y nuevas peticiones; no por WebSocket.
 - **¿Quién valida?** Cliente para UX y servidor para integridad/seguridad.
-- **¿Qué conserva la cookie?** Un identificador de sesión; el carrito y `userId` están del lado servidor.
+- **¿Qué conserva la cookie?** `cookie-session` serializa y firma `userId` y carrito dentro de la cookie; no cifra el contenido. El catálogo, usuarios y pedidos siguen en SQLite.
 
 ## 21. Verificación reproducible
 
